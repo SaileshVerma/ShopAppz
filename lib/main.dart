@@ -26,12 +26,12 @@ class ShopApp extends StatelessWidget {
           value: Auth(),
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
-          create: (_) => Products('', []),
+          create: (_) => Products('', [], ''),
           update: (ctx, auth, previousProduct) {
             return Products(
-              auth.token,
-              previousProduct == null ? [] : previousProduct.items,
-            );
+                auth.token,
+                previousProduct == null ? [] : previousProduct.items,
+                auth.userId);
           },
 
           // update:(ctx,auth,previousProducts) =>Products(auth.token,previousProducts==null?[]:previousProducts.items),
@@ -39,8 +39,18 @@ class ShopApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
-        ChangeNotifierProvider.value(
-          value: Orders(),
+        // ChangeNotifierProvider.value(
+        //   value: Orders(),
+        // ),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (_) => Orders('', [], ''),
+          update: (ctx, auth, previousProduct) {
+            return Orders(
+              auth.token,
+              previousProduct == null ? [] : previousProduct.order,
+              auth.userId,
+            );
+          },
         ),
       ],
       child: Consumer<Auth>(

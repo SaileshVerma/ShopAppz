@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopapp/screens/products_deatail_screen.dart';
 import 'package:shopapp/Providers/product.dart';
 import 'package:shopapp/Providers/cart.dart';
+import 'package:shopapp/Providers/auth.dart';
 
 class ProductItem extends StatelessWidget {
 //  final String id;
@@ -16,6 +17,7 @@ class ProductItem extends StatelessWidget {
     //listener of the pr grid provider            // Here LISTEN FALSE will stop the building of the widget aga
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
@@ -41,7 +43,8 @@ class ProductItem extends StatelessWidget {
                       ? Icons.favorite
                       : Icons.favorite_border),
                   onPressed: () {
-                    product.toggleFavoriteStatus();
+                    product.toggleFavoriteStatus(
+                        authData.token, authData.userId);
                   }),
             ),
             trailing: IconButton(
